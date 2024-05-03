@@ -6,7 +6,7 @@
 
 import { createPrompt } from 'bun-promptx'
 
-// binary search function
+// function
 function binarySearch(userArray: Array<number>, userNum: number, lowIndex: number, hihgIndex: number) {
     // find midIndex
     let midIndex = Math.floor((lowIndex + hihgIndex) / 2)
