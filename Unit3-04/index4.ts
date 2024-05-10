@@ -6,24 +6,31 @@
 
 import { createPrompt } from 'bun-promptx'
 
-console.log(`Towers of Hanoi program`)
-
-// get user input
-const userInput = createPrompt("How many disks would you like in your tower? (1->): ")
-    let inputNumber = parseInt(userInput.value)
-
-// function
-function towerOfHanoi(inputNumber, source, target, auxiliary) {
-    if (inputNumber > 0) {
-        // Move n - 1 disks from source to auxiliary, so they are out of the way
-        towerOfHanoi(inputNumber - 1, source, auxiliary, target);
-
-        // Move the nth disk from source to target
-        console.log('Move disk ' + inputNumber + ' from ' + source + ' to ' + target);
-
-        // Move the n - 1 disks that we left on auxiliary to target
-        towerOfHanoi(inputNumber - 1, auxiliary, target, source);
+// tower of hanoi function
+function towerOfHanoi(nOfDisk: number, startPeg: number, endPeg: number) {
+    const pegNumber = 6
+    if (nOfDisk == 1) {
+        console.log(`Move disk 1 from peg ${startPeg} to peg ${endPeg}`)
+        return
+    } else {
+        towerOfHanoi(nOfDisk - 1, startPeg, pegNumber - startPeg - endPeg)
+        console.log(`Move disk ${nOfDisk} from peg ${startPeg} to peg ${endPeg}`)
+        towerOfHanoi(nOfDisk - 1, pegNumber - startPeg - endPeg, endPeg)
     }
 }
 
-console.log("\nDone.")
+// get user input
+const userInput = createPrompt("How many disks are you moving: ")
+let inputNumber = parseInt(userInput.value)
+
+// make sure the user input a number in the right range
+if (inputNumber < 0) {
+    console.log("\nInput a number over 0.")
+    process.exit()
+}
+
+// run the tower of hanoi function
+const startPeg = 1
+const endPeg = 3
+
+towerOfHanoi(inputNumber, startPeg, endPeg)
