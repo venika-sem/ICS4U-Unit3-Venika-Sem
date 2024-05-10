@@ -20,7 +20,7 @@ function towerOfHanoi(nOfDisk: number, startPeg: number, endPeg: number) {
 }
 
 // get user input
-const userInput = createPrompt("How many disks are you moving: ")
+const userInput = createPrompt("How many disks would you like in your tower: ")
 let inputNumber = parseInt(userInput.value)
 
 // make sure the user input a number in the right range
