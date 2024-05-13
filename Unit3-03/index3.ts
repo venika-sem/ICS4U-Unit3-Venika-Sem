@@ -1,11 +1,8 @@
-/**
-* This program generates 250 random numbers in an array
-* and allows the user to search the array for a number.
-*
-* @author  Ava Venturino
-* @version 0.5
-* @since   2020-09-01
-*/
+/* This program uses recursion to perform binary search
+* *By Venika Sem
+* *@version 1.0
+* *@since Feb-2024
+* */
 
 import { createPrompt } from 'bun-promptx'
 const MIN = 0
