@@ -4,33 +4,64 @@
  *@since Feb-2024
 */
 
-import { createPrompt } from 'bun-promptx'
+// generate magic squares
+function genSquare(square: number[], index: number) {
+    let numberOfSquares = 0
+    let proccessNum = 0
 
-// tower of hanoi function
-function towerOfHanoi(nOfDisk: number, startPeg: number, endPeg: number) {
-    const pegNumber = 6
-    if (nOfDisk == 1) {
-        console.log(`Move disk 1 from peg ${startPeg} to peg ${endPeg}`)
-        return
-    } else {
-        towerOfHanoi(nOfDisk - 1, startPeg, pegNumber - startPeg - endPeg)
-        console.log(`Move disk ${nOfDisk} from peg ${startPeg} to peg ${endPeg}`)
-        towerOfHanoi(nOfDisk - 1, pegNumber - startPeg - endPeg, endPeg)
+    for (let counter = 0; counter < 9; counter++) {
+        square[index] = counter + 1
+        proccessNum++
+        if (index < 8) {
+            genSquare(square, index + 1)
+        } else {
+            if (isMagic(square) && isRepeat(square)) {
+                printSquare(square)
+                numberOfSquares++
+            }
+        }
     }
 }
 
-// get user input
-const userInput = createPrompt("How many disks are you moving: ")
-let inputNumber = parseInt(userInput.value)
-
-// make sure the user input a number in the right range
-if (inputNumber < 0) {
-    console.log("\nInput a number over 0.")
-    process.exit()
+// check if a square is magic
+function isMagic(preSquare: number[]) {
+    const magicSum = 15
+    const row1 = preSquare[0] + preSquare[1] + preSquare[2]
+    const row2 = preSquare[3] + preSquare[4] + preSquare[5]
+    const row3 = preSquare[6] + preSquare[7] + preSquare[8]
+    const col1 = preSquare[0] + preSquare[3] + preSquare[6]
+    const col2 = preSquare[1] + preSquare[4] + preSquare[7]
+    const col3 = preSquare[2] + preSquare[5] + preSquare[8]
+    const diag1 = preSquare[0] + preSquare[4] + preSquare[8]
+    const diag2 = preSquare[2] + preSquare[4] + preSquare[6]
+    
+    return row1 === magicSum && row2 === magicSum && row3 === magicSum && col1 === magicSum && col2 === magicSum && col3 === magicSum && diag1 === magicSum && diag2 === magicSum
 }
 
-// run the tower of hanoi function
-const startPeg = 1
-const endPeg = 3
+// checks if square repeats (true if it doesn't, false if it does)
+function isRepeat(square: number[]) {
+    for (let counter = 0; counter < 9; counter++) {
+        for (let counter2 = counter + 1; counter2 < 9; counter2++) {
+            if (square[counter] === square[counter2]) {
+                return false
+            }
+        }
+    }
+    return true
+}
 
-towerOfHanoi(inputNumber, startPeg, endPeg)
+// print square
+function printSquare(square: number[]) {
+    console.log('\n*****')
+    console.log(square[0] + ' ' + square[1] + ' ' + square[2])
+    console.log(square[3] + ' ' + square[4] + ' ' + square[5])
+    console.log(square[6] + ' ' + square[7] + ' ' + square[8])
+    console.log('*****\n')
+}
+
+// main
+const magicSquare = [0, 0, 0, 0, 0, 0, 0, 0, 0]
+console.log("The magic squares are: ")
+genSquare(magicSquare, 0)
+
+console.log("\nDone.")
