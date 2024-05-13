@@ -1,55 +1,54 @@
-/*This program uses recursion to perform binary search
- * *By Venika Sem
- * *@version 1.0
- * *@since Feb-2024
- * */
+/**
+* This program generates 250 random numbers in an array
+* and allows the user to search the array for a number.
+*
+* @author  Ava Venturino
+* @version 0.5
+* @since   2020-09-01
+*/
 
 import { createPrompt } from 'bun-promptx'
+const MIN = 0
+const MAX = 999
+const ARRAY_SIZE = 50
 
-// function
-function binarySearch(userArray: Array<number>, userNum: number, lowIndex: number, hihgIndex: number) {
-    // find midIndex
-    let midIndex = Math.floor((lowIndex + hihgIndex) / 2)
-
-    // check  number found
-    if (userArray[midIndex] == userNum) {
-        return midIndex
-    } else if (userArray[midIndex] < userNum) {
-        return binarySearch(userArray, userNum, midIndex + 1, hihgIndex)
-    } else if (userArray[midIndex] > userNum) {
-        return binarySearch(userArray, userNum, lowIndex, midIndex - 1)
-    } else {
-        return -1
+function binarySearch(userArray: number[], userNumber: number,
+  lowIndex: number, highIndex: number) {
+    let rVal: number = -1
+    if (lowIndex <= highIndex) {
+      let midIndex: number = Math.floor((lowIndex + highIndex) / 2)
+      if (userArray[midIndex] == userNumber) {
+        rVal = midIndex
+      } else if (userArray[midIndex] > userNumber) {
+        rVal = binarySearch(userArray, userNumber, lowIndex, midIndex - 1)
+      } else {
+        rVal = binarySearch(userArray, userNumber, midIndex + 1, highIndex)
+      }
     }
-}
+    return rVal
+  }
 
-// initialise array
-const userArray: number[] = []
+  let numberArray: number[] = []
 
-// add numbers to array
-for (let counter = 0; counter < 250; counter++) {
-    userArray[counter] = Math.floor(Math.random() * 999)
-}
+  for (let i = 0; i < ARRAY_SIZE; i++) {
+    numberArray[i] = Math.floor(Math.random() * (MAX + 1))
+  }
 
-// sort the array low to high
-userArray.sort((a, b) => a - b)
-console.log(`Sorted list of numbers:`)
+  numberArray = numberArray.sort((a, b) => a - b)
 
-// print the array. join separates them by commas
-console.log(userArray.join(", "))
+  console.log("\nSorted list of numbers:\n")
+  console.log(numberArray)
 
-// get user input
-const userInput = createPrompt("\nWhat number are you searching for (integer between 0 and 999): ")
-let inputNumber = parseInt(userInput.value)
-
-// make sure the user input a number in the right range
-if (inputNumber < 0 || inputNumber > 999) {
-    console.log("\n-1")
-    process.exit()
-}
-
-// search for the number
-let searchResult = binarySearch(userArray, inputNumber, 0, userArray.length - 1)
-console.log(`\nYour number is in index: ${searchResult}`)
-
+  try {
+    const userInput = createPrompt(
+      `What number are you searching for in the array? (integer between 0 and 999): `
+    )
+    let inputInt = parseInt(userInput.value)
+    if (inputInt > MAX || inputInt < MIN) {
+      throw Error()
+    }
+      console.log(`Returned = ${binarySearch(numberArray, inputInt, 0, numberArray.length - 1)}`)
+    } catch {
+      console.log(`Invalid input.`)
+    }
 console.log("\nDone.")
