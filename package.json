@@ -1,0 +1,1 @@
+{ "dependencies": { "@inquirer/prompts": "^5.0.5", "bun-promptx": "^0.2.0" } }
